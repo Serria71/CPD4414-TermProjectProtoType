@@ -25,7 +25,7 @@ public class RPGGamePrototype {
 
         int c = 0;
         Scanner keyboard = new Scanner(System.in);
-        while (c == 0){
+        while (c == 0){ //Replaced with a button for rerolls/keeps
             while (c <= 3){
                 // Random number generators for the 3 character stats
                 Random rand2 = new Random();
@@ -54,6 +54,9 @@ public class RPGGamePrototype {
         System.out.println("CON: " + CON);
         
         // Declarations for player and enemy stats
+        
+        // These declarations replaced with a pull from the database for the enemies and player statistic due to
+        // wanting the ability to save games.
         int e = 1;
         int contin = 1;
         int enemyHealth = 7;
@@ -64,65 +67,78 @@ public class RPGGamePrototype {
         int enemyBaseAttack = 0;
         int totalDamage = 0;
         
-        Random rand2 = new Random();
-        int enemyNumber = 2 + rand2.nextInt((3 - 2) + 2);
-        System.out.println("You encounter " + enemyNumber + " enemies!");
+        System.out.println("Enter the number of encounters: ");
+        e = keyboard.nextInt();
         
-        enemyHealth = enemyHealth * enemyNumber;
+        int encountersCompleted = 0;
         
         do {
-            Random rand3 = new Random();
-            int playerAttack = 1 + rand3.nextInt((20 - 1) + 1);
-            playerAttack = playerAttack + playerBaseAttack + ((STR-10)/2);
-            if (playerAttack >= enemyArmourClass){
-                System.out.println("You hit the enemy!");
-                Random rand4 = new Random();
-                int playerDamage = 1 + rand4.nextInt((6 - 1) + 1);
-                playerDamage = playerDamage + ((STR-10)/2);
-                enemyHealth = enemyHealth - playerDamage;
-                System.out.println("You deal " + playerDamage + " damage to the enemy!");
-                totalDamage = totalDamage + playerDamage;
-                if (totalDamage > enemyHealth){
-                   System.out.println("You defeated an enemy!");
-                    enemyNumber = enemyNumber - 1;
-                    totalDamage = 0;
-                }
-            } else {
-                System.out.println("You miss the enemy!");
-            }
-            if (enemyHealth <= 0){
-                contin = 0;               
-            } else {
-                do {
-                    Random rand5 = new Random();
-                    int enemyAttack = 1 + rand5.nextInt((20 - 1) + 1);
-                    enemyAttack = enemyAttack + enemyBaseAttack + ((12-10)/2);
-                    if (enemyAttack >= playerArmourClass){
-                        System.out.println("The enemy hits you!");
-                        Random rand4 = new Random();
-                        int enemyDamage = 1 + rand4.nextInt((6 - 1) + 1);
-                        enemyDamage = enemyDamage + ((STR-10)/2);
-                        System.out.println("They deal " + enemyDamage + " damage to you!");
-                        playerHealth = playerHealth - enemyDamage;
-                        System.out.println("You have " + playerHealth + " HP remaining!");
-                        System.out.println("");
-                        e++;
-                    } else {
-                        System.out.println("The enemy misses!");
-                        e++;
+            Random rand2 = new Random();
+            int enemyNumber = 2 + rand2.nextInt((3 - 2) + 2);
+            System.out.println("You encounter " + enemyNumber + " enemies!");
+            
+            enemyHealth = enemyHealth * enemyNumber; //Seperate not-pooled enemy health bar.
+            //A attack button and possibly a button to choose which enemy to attack.
+            do {
+                Random rand3 = new Random();
+                int playerAttack = 1 + rand3.nextInt((20 - 1) + 1);
+                playerAttack = playerAttack + playerBaseAttack + ((STR-10)/2);
+                if (playerAttack >= enemyArmourClass){
+                    System.out.println("You hit the enemy!");
+                    Random rand4 = new Random();
+                    int playerDamage = 1 + rand4.nextInt((6 - 1) + 1);
+                    playerDamage = playerDamage + ((STR-10)/2);
+                    enemyHealth = enemyHealth - playerDamage;
+                    System.out.println("You deal " + playerDamage + " damage to the enemy!");
+                    totalDamage = totalDamage + playerDamage;
+                    if (totalDamage > enemyHealth){
+                       System.out.println("You defeated an enemy!");
+                        enemyNumber = enemyNumber - 1;
+                        totalDamage = 0;
                     }
-                } while (e <= enemyNumber);
-                e = 1;
+                } else {
+                    System.out.println("You miss the enemy!");
+                }
+                if (enemyHealth <= 0){
+                    contin = 0;               
+                } else {
+                    do {
+                        Random rand5 = new Random();
+                        int enemyAttack = 1 + rand5.nextInt((20 - 1) + 1);
+                        enemyAttack = enemyAttack + enemyBaseAttack + ((12-10)/2);
+                        if (enemyAttack >= playerArmourClass){
+                            System.out.println("The enemy hits you!");
+                            Random rand4 = new Random();
+                            int enemyDamage = 1 + rand4.nextInt((6 - 1) + 1);
+                            enemyDamage = enemyDamage + ((STR-10)/2);
+                            System.out.println("They deal " + enemyDamage + " damage to you!");
+                            playerHealth = playerHealth - enemyDamage;
+                            System.out.println("You have " + playerHealth + " HP remaining!");
+                            System.out.println("");
+                            e++;
+                        } else {
+                            System.out.println("The enemy misses!");
+                            e++;
+                        }
+                    } while (e <= enemyNumber);
+                    e = 1;
+                }
+                if (playerHealth <= 0){
+                    contin = 0;
+                    System.out.println("You died.");
+                }
+                if (enemyNumber == 0){
+                    System.out.println("You defeated the enemy!");
+                }
+                
+            } while ((enemyNumber > 0 && playerHealth > 0) || contin == 1);
+            if (enemyNumber != 0){
+                break;
+            } else {
+                encountersCompleted++;
             }
-            if (playerHealth <= 0){
-                contin = 0;
-                System.out.println("You died.");
-            }
-            if (enemyNumber == 0){
-                System.out.println("You defeated the enemy!");
-            }
-        } while ((enemyNumber > 0 && playerHealth > 0) || contin == 1);
-        
+        } while (encountersCompleted <= e);
+        //Ability for multiple encounters.
     }
     
 }
