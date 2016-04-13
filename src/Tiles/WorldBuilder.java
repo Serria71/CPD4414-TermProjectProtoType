@@ -26,7 +26,7 @@ public class WorldBuilder {
     private WorldBuilder randomizeTiles() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                tiles[x][y] = Math.random() < 0.5 ? Tile.FLOOR : Tile.WALL;
+                tiles[x][y] = Math.random() <= 0.5 ? Tile.FLOOR : Tile.WALL;
             }
         }
         return this;
