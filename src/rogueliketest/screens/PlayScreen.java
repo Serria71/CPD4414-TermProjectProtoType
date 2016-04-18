@@ -27,19 +27,15 @@ public class PlayScreen implements Screen {
     public Screen respondToUserInput(KeyEvent key) {
         switch (key.getKeyCode()){
         case KeyEvent.VK_ESCAPE: return new LoseScreen();
-        case KeyEvent.VK_ENTER: return new WinScreen();
+        case KeyEvent.VK_K: return new StatScreen();
         case KeyEvent.VK_LEFT:
         case KeyEvent.VK_A: scrollBy(-1, 0); break;
         case KeyEvent.VK_RIGHT:
         case KeyEvent.VK_D: scrollBy( 1, 0); break;
-        case KeyEvent.VK_UP:
-        case KeyEvent.VK_K: scrollBy( 0,-1); break;
         case KeyEvent.VK_DOWN:
         case KeyEvent.VK_S: scrollBy( 0, 1); break;
-        case KeyEvent.VK_W: scrollBy(-1,-1); break;
-        case KeyEvent.VK_U: scrollBy( 1,-1); break;
-        case KeyEvent.VK_B: scrollBy(-1, 1); break;
-        case KeyEvent.VK_N: scrollBy( 1, 1); break;
+        case KeyEvent.VK_UP:
+        case KeyEvent.VK_W: scrollBy(0,-1); break;
         }
     
         return this;

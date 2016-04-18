@@ -11,15 +11,21 @@ package rogueliketest.screens;
  */
 import java.awt.event.KeyEvent;
 import asciiPanel.AsciiPanel;
+import static rogueliketest.screens.CharacterGenScreen.stats;
 
 public class LoseScreen implements Screen {
 
     public void displayOutput(AsciiPanel terminal) {
-        terminal.write("You lost.", 1, 1);
-        terminal.writeCenter("-- press [enter] to restart --", 22);
+        terminal.write("You presumably starved to death in a cave all alone.", 1, 1);
+        terminal.writeCenter("-- press the [enter] key to create another character --", 22);
     }
 
     public Screen respondToUserInput(KeyEvent key) {
-        return key.getKeyCode() == KeyEvent.VK_ENTER ? new PlayScreen() : this;
+        switch (key.getKeyCode()) {
+            case KeyEvent.VK_ENTER: 
+                stats();
+                return new CharacterGenScreen();
+        }
+        return this;
     }
 }
